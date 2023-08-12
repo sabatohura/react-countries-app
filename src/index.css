@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .main-screen {
+      @apply py-2 px-2 md:px-20 md:py-4
+    } 
+}
