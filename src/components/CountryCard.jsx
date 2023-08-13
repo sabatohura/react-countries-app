@@ -1,8 +1,7 @@
   import React from 'react'
-  
   const CountryCard = ({country, displayMode}) =>(
         <>
-            <div className={`${displayMode ? 'bg-ThemeColor-DmDarkBlue' : 'bg-ThemeColor-BWhite'} mb-4`}>
+            <div className={`${displayMode ? 'bg-ThemeColor-DmDarkBlue' : 'bg-ThemeColor-BWhite'} mb-4` } >
               <img src={country.flags.png} alt={country.name.common} className='w-48 h-28' />
               <div className=' h-auto w-28 m-2 p-2'>
                 <h3 className='text-md font-medium'>{country.name.common}</h3>
