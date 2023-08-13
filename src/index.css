@@ -13,4 +13,7 @@
       @apply w-full p-2
 
     }
+    .country-info {
+      @apply text-xs inline-flex gap-2 
+    }
 }
