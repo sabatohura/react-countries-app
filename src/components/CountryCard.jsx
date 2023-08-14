@@ -10,7 +10,6 @@
                 <p className='country-info'><span className='font-bold'>Region:</span> <span className='whitespace-nowrap'>{country.region}</span></p>
               </div>
             </div>
-            
         </>
     )
   export default CountryCard

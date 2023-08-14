@@ -1,7 +1,7 @@
-// import { async } from 'q';
 import React, {useState, useEffect} from 'react'
 import {BsMoonStarsFill, BsSearch} from 'react-icons/bs'
 import {IoMdArrowDropdown} from 'react-icons/io'
+import {BiArrowBack} from 'react-icons/bi'
 import CountryCard from '../components/CountryCard';
 
 const Home = () => {
@@ -10,21 +10,20 @@ const Home = () => {
     const [showFilter, setShowFilter] = useState(false)
     const [selectedRegion, setselectedRegion] = useState('Filter by region....')
     const [countries, setCountries] = useState([]);
-
-    const [singleCountry, setSingleCountry] = useState(false);
-
-    // const [regionState, setRegionState] = useState('all');
     const [apiRoute, setApiRoute] = useState('all');
 
+    //Fetch Countries Effect
     useEffect(() => {
       fetchCountries();
     },);
 
+    //Change Region
     const changeRegion = (value) => {
         setselectedRegion(value);
         setShowFilter(false);
         setApiRoute(`region/${value}`)
     }
+    // Fetch Countries Api
     const fetchCountries = async() => {
         try {
             const response = await fetch(`https://restcountries.com/v3.1/${apiRoute}`);
@@ -34,19 +33,17 @@ const Home = () => {
             console.log('error:', error)
         }
     }
-
-
-    const openCountry =(value)=> {  
-        setSingleCountry(true);
-    }
-
-
     // search Country
     const [input, setInput] = useState("");
     const filteredCountries = countries.filter(country =>
         country.name.common.toLowerCase().includes(input.toLowerCase())
       );
 
+    // open single country Page
+    const [singleCountry, setSingleCountry] = useState(null);
+    const openCountry =(value)=> {  
+        setSingleCountry(value);
+    }
 
 
   return (
@@ -100,7 +97,44 @@ const Home = () => {
 
         {!!singleCountry && (
             <div className="main-screen w-full h-screen">
-                <button className='input shadow-lg border border-slate-600/10  w-40 hover:scale-110' onClick={()=> setSingleCountry(false)}>Back</button>
+                <div className='input shadow-lg border border-slate-600/10  w-32 hover:scale-110 flex items-center justify-evenly px-4 '>
+                    <BiArrowBack size={18} />
+                    <button className='text-sm' onClick={()=> setSingleCountry(false)}>Back</button>
+                </div>
+                <div className='md:flex my-10 justify-between items-center gap-20'>
+                    <div className='my-4'>
+                        <img src={singleCountry.flags.png} alt={singleCountry.name.common} className='h-72 w-96' />
+                    </div>
+                    <div className='flex grow flex-col'>
+                        <h2 className="text-xl font-semibold mb-2">{singleCountry.name.common}</h2>
+                        <div className='flex gap-10 flex-col md:flex-row'>
+                            <div className='flex flex-col md:my-6 gap-2'>
+                                <p className='country-info max-w-26'><span className='font-bold'>Official Name:</span> <span className='whitespace-nowrap '>{singleCountry.name.official}</span></p>
+                                <p className='country-info max-w-26'><span className='font-bold'>Population:</span> <span className='whitespace-nowrap '>{singleCountry.population}</span></p>
+                                <p className='country-info max-w-26'><span className='font-bold'>Region:</span> <span className='whitespace-nowrap '>{singleCountry.region}</span></p>
+                                <p className='country-info max-w-26'><span className='font-bold'>Sub Region:</span> <span className='whitespace-nowrap '>{singleCountry.subregion}</span></p>
+                                <p className='country-info max-w-26'><span className='font-bold'>Capital:</span> <span className='whitespace-nowrap '>{singleCountry.capital}</span></p>
+                            </div>
+                            <div className='flex flex-col md:my-6 gap-2'>
+                                <p className='country-info max-w-26'><span className='font-bold'>Top Level Domain:</span> <span className='whitespace-nowrap '>{singleCountry.tld}</span></p>
+                                {/* <p className='country-info max-w-26'><span className='font-bold'>Currencies:</span> <span className='whitespace-nowrap '>{singleCountry.population}</span></p>
+                                <p className='country-info max-w-26'><span className='font-bold'>Languages:</span> <span className='whitespace-nowrap '>{singleCountry.region}</span></p> */}
+                            </div>
+                        </div>
+                        <div className='md:my-8 flex'>
+                            <div className='flex gap-2 items-center'>
+                            <p className='text-sm font-medium'>Border Countries: </p>
+                            {
+                                singleCountry.borders.map((border, id)=>(
+                                    <p key={id} className='text-xs input  border border-slate-600/10 py-0 px-4 shadow-sm'>
+                                        {border}
+                                    </p>
+                                ))
+                            } 
+                            </div>               
+                        </div>
+                    </div>
+                </div>
             </div>
         )}
 
