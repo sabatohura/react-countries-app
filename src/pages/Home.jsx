@@ -85,7 +85,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <div className="main-screen flex flex-wrap justify-between gap-3">
+                <div className="main-screen flex flex-wrap justify-between">
                     {
                         filteredCountries.map((country, id)=> (
                             <div className='flex' onClick={()=>openCountry(country)} key={id}>
