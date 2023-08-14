@@ -97,9 +97,9 @@ const Home = () => {
 
         {!!singleCountry && (
             <div className="main-screen w-full h-screen">
-                <div className='input shadow-lg border border-slate-600/10  w-32 hover:scale-110 flex items-center justify-evenly px-4 '>
+                <div className='input shadow-lg border border-slate-600/10  w-32 hover:scale-110 flex items-center justify-evenly px-4  ' onClick={()=> setSingleCountry(false)}>
                     <BiArrowBack size={18} />
-                    <button className='text-sm' onClick={()=> setSingleCountry(false)}>Back</button>
+                    <button className='text-sm' >Back</button>
                 </div>
                 <div className='md:flex my-10 justify-between items-center gap-20'>
                     <div className='my-4'>
@@ -124,12 +124,15 @@ const Home = () => {
                         <div className='md:my-8 flex'>
                             <div className='flex gap-2 items-center'>
                             <p className='text-sm font-medium'>Border Countries: </p>
-                            {
+                            {singleCountry.borders ? (
                                 singleCountry.borders.map((border, id)=>(
                                     <p key={id} className='text-xs input  border border-slate-600/10 py-0 px-4 shadow-sm'>
                                         {border}
                                     </p>
                                 ))
+                            ): (
+                                <p className='text-xs input  border border-slate-600/10 py-0 px-4 shadow-sm'>None</p>
+                            )
                             } 
                             </div>               
                         </div>
