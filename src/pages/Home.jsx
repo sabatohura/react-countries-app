@@ -5,12 +5,12 @@ import {IoMdArrowDropdown} from 'react-icons/io'
 import CountryCard from '../components/CountryCard';
 
 const Home = () => {
-    const regions = ['all','Africa', 'Asia','America','Europe', 'Oceania'];
+    const regions = ['Africa', 'Asia','America','Europe', 'Oceania'];
     const [darkMode, setdarkMode] = useState(true);
     const [showFilter, setShowFilter] = useState(false)
     const [selectedRegion, setselectedRegion] = useState('Filter by region....')
     const [countries, setCountries] = useState([]);
-    
+
     const [singleCountry, setSingleCountry] = useState(false);
 
     // const [regionState, setRegionState] = useState('all');
@@ -24,7 +24,6 @@ const Home = () => {
         setselectedRegion(value);
         setShowFilter(false);
         setApiRoute(`region/${value}`)
-
     }
     const fetchCountries = async() => {
         try {
@@ -36,10 +35,18 @@ const Home = () => {
         }
     }
 
+
     const openCountry =(value)=> {  
         setSingleCountry(true);
-         
     }
+
+
+    // search Country
+    const [input, setInput] = useState("");
+    const filteredCountries = countries.filter(country =>
+        country.name.common.toLowerCase().includes(input.toLowerCase())
+      );
+
 
 
   return (
@@ -59,7 +66,7 @@ const Home = () => {
                     <div>
                         <div className={`rounded-md w-72 flex items-center gap-6 py-2 px-6 ${darkMode? 'bg-ThemeColor-DmDarkBlue': 'bg-ThemeColor-BWhite'} `}>
                             <BsSearch/> 
-                            <input  placeholder='Search for a country....' className='input'/>
+                            <input  placeholder='Search for a country....' className='input' value={input} onChange={(e)=> setInput(e.target.value)} />
                         </div>
                     </div>
                     <div className='flex gap-3 flex-col'>
@@ -69,7 +76,7 @@ const Home = () => {
                                 <p><IoMdArrowDropdown className={` ${showFilter? 'rotate-180' : ''}`}/></p>
                             </div>
                         </div>
-                        <div className={`absolute text-sm rounded-md justify-between flex-col items-start w-48 gap-2 ${darkMode ? 'bg-ThemeColor-DmDarkBlue' : 'bg-ThemeColor-BWhite'} ${!showFilter ? 'hidden' : 'flex'}`}>
+                        <div className={`absolute text-sm shadow-md rounded-lg my-3 justify-between flex-col items-start w-50 gap-2 ${darkMode ? 'bg-ThemeColor-DmDarkBlue' : 'bg-ThemeColor-BWhite'} ${!showFilter ? 'hidden' : 'flex'}`}>
                             {
                                 regions.map(region => {
                                 return <p key={region} className= {`px-4 py-2  w-48  cursor-pointer ${darkMode? 'hover:bg-ThemeColor-DmVeryDarkBlue' : 'hover:bg-ThemeColor-LmVeryLightGray' }`} onClick={()=>changeRegion(region)}>{region}</p>
@@ -80,9 +87,9 @@ const Home = () => {
                 </div>
                 <div className="main-screen flex flex-wrap justify-between gap-3">
                     {
-                        countries.map((country)=> (
-                            <div className='flex' onClick={()=>openCountry(country)}>
-                                <CountryCard country={country} key={`key ${country}`} displayMode={darkMode} />
+                        filteredCountries.map((country, id)=> (
+                            <div className='flex' onClick={()=>openCountry(country)} key={id}>
+                                <CountryCard country={country}  displayMode={darkMode} />
                             </div>
                             
                     ))
@@ -93,7 +100,7 @@ const Home = () => {
 
         {!!singleCountry && (
             <div className="main-screen w-full h-screen">
-                <button className='input shadow-lg border border-slate-700/10  w-40 hover:scale-110' onClick={()=> setSingleCountry(false)}>Back</button>
+                <button className='input shadow-lg border border-slate-600/10  w-40 hover:scale-110' onClick={()=> setSingleCountry(false)}>Back</button>
             </div>
         )}
 
